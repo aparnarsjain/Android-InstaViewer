@@ -18,6 +18,9 @@ android {
         }
     }
 }
+repositories {
+    mavenCentral()
+}
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -29,5 +32,6 @@ dependencies {
     //load remote images into image views
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'joda-time:joda-time:2.3'
-
+    compile 'com.makeramen:roundedimageview:2.2.1'
+    compile 'com.android.support:support-v4:23.1.1'
 }

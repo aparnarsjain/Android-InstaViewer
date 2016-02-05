@@ -1,5 +1,7 @@
 package com.example.aparna.instaviewer;
 
+import org.json.JSONArray;
+
 /**
  * Created by aparna on 2/2/16.
  */
@@ -12,5 +14,6 @@ public class InstagramPhoto {
     public int imageHeight;
     public int likesCount;
     public long createdTime;
+    public JSONArray comments;
 
 }

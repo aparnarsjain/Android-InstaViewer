@@ -2,6 +2,7 @@ package com.example.aparna.instaviewer;
 
 import android.content.Context;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,8 @@ import org.joda.time.Hours;
 import org.joda.time.Minutes;
 import org.joda.time.Months;
 import org.joda.time.Weeks;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -46,6 +49,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         TextView tvUsername = (TextView)convertView.findViewById(R.id.tvUsername);
         TextView tvCreatedSince = (TextView)convertView.findViewById(R.id.tvTime);
         TextView tvLikes = (TextView)convertView.findViewById(R.id.tvLikes);
+        TextView tvComments = (TextView)convertView.findViewById(R.id.tvComments);
+
 
         ImageView ivPhoto = (ImageView)convertView.findViewById(R.id.ivPhoto);
         ImageView ivProfilePic = (ImageView)convertView.findViewById(R.id.ivProfilePic);
@@ -54,13 +59,34 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         tvUsername.setText(photo.username);
         tvCreatedSince.setText(getTimeAgo(photo.createdTime));
         tvLikes.setText(getLikesText(photo.likesCount));
+        try{
+            JSONObject comment = photo.comments.getJSONObject(0);
+            tvComments.setText(comment.getString("text"));
+        }catch (JSONException e){
+            Log.d("debug", e.toString());
+        }
+
 
         //clear out the imageview
         ivPhoto.setImageResource(0);
+        //insert the image using picasso
         Picasso.with(getContext()).load(photo.imageUrl).into(ivPhoto);
+
+//        Transformation transformation = new RoundedTransformationBuilder()
+//                .borderColor(Color.BLACK)
+//                .borderWidthDp(3)
+//                .cornerRadiusDp(30)
+//                .oval(false)
+//                .build();
+
+        ivProfilePic.setImageResource(0);
+//        Picasso.with(getContext())
+//                .load(photo.profileImageUrl)
+//                .fit()
+//                .transform(transformation)
+//                .into(ivProfilePic);
         Picasso.with(getContext()).load(photo.profileImageUrl).into(ivProfilePic);
 
-        //insert the image using picasso
         return  convertView;
     }
     private String getLikesText(int likesCount){
