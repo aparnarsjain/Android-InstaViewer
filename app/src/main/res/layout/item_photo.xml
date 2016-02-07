@@ -95,17 +95,41 @@
         android:text="View all comments"
         android:id="@+id/btnViewMoreComments"
         android:layout_below="@+id/tvCaption"
+        android:background="?android:attr/selectableItemBackground"
         android:onClick="showMoreComments"
+        android:typeface="monospace"
+        android:textAllCaps="false"
+        android:layout_alignParentLeft="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/tvComments1"
+        android:layout_below="@id/btnViewMoreComments"
+        android:layout_centerVertical="true"
+        android:textColor="@color/colorPrimary"
         android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="New Text"
-        android:id="@+id/tvComments"
-        android:layout_below="@id/btnViewMoreComments"
+        android:id="@+id/tvComments2"
+        android:layout_below="@id/tvComments1"
+        android:textColor="@color/colorPrimary"
+        android:layout_marginTop="10dp"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_below="@+id/btnViewMoreComments"
+        android:layout_toLeftOf="@+id/tvLikes"
+        android:layout_marginLeft="5dp"
+        android:background="#090465" />
 
 
 </RelativeLayout>

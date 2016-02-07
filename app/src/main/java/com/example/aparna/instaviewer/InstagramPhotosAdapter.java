@@ -20,6 +20,7 @@ import org.joda.time.Weeks;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -49,7 +50,8 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         TextView tvUsername = (TextView)convertView.findViewById(R.id.tvUsername);
         TextView tvCreatedSince = (TextView)convertView.findViewById(R.id.tvTime);
         TextView tvLikes = (TextView)convertView.findViewById(R.id.tvLikes);
-        TextView tvComments = (TextView)convertView.findViewById(R.id.tvComments);
+        TextView tvComments1 = (TextView)convertView.findViewById(R.id.tvComments1);
+        TextView tvComments2 = (TextView)convertView.findViewById(R.id.tvComments2);
 
 
         ImageView ivPhoto = (ImageView)convertView.findViewById(R.id.ivPhoto);
@@ -61,37 +63,32 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         tvLikes.setText(getLikesText(photo.likesCount));
         try{
             JSONObject comment = photo.comments.getJSONObject(0);
-            tvComments.setText(comment.getString("text"));
+            tvComments1.setText(comment.getString("text"));
+            comment = photo.comments.getJSONObject(1);
+            tvComments2.setText(comment.getString("text"));
         }catch (JSONException e){
             Log.d("debug", e.toString());
         }
 
-
         //clear out the imageview
         ivPhoto.setImageResource(0);
-        //insert the image using picasso
-        Picasso.with(getContext()).load(photo.imageUrl).into(ivPhoto);
 
-//        Transformation transformation = new RoundedTransformationBuilder()
-//                .borderColor(Color.BLACK)
-//                .borderWidthDp(3)
-//                .cornerRadiusDp(30)
-//                .oval(false)
-//                .build();
+        //insert the image using picasso
+        Picasso.with(getContext())
+                .load(photo.imageUrl)
+                .placeholder(R.drawable.placeholder).into(ivPhoto);
 
         ivProfilePic.setImageResource(0);
-//        Picasso.with(getContext())
-//                .load(photo.profileImageUrl)
-//                .fit()
-//                .transform(transformation)
-//                .into(ivProfilePic);
         Picasso.with(getContext()).load(photo.profileImageUrl).into(ivProfilePic);
 
         return  convertView;
     }
     private String getLikesText(int likesCount){
+        DecimalFormat formatter = new DecimalFormat("#,###,###");
+        String formattedNumber = formatter.format(likesCount);
+
         String likesWord = "likes";
-        return likesCount + " " + likesWord;
+        return formattedNumber + " " + likesWord;
     }
     private String getTimeAgo(long time){
         DateTime createdDateTime = new DateTime(time*1000);
@@ -111,35 +108,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
         }
         return timeAgo;
     }
- /*   public static String getTimeAgo(long time) {
-        if (time < 1000000000000L) {
-            // if timestamp given in seconds, convert to millis
-            time *= 1000;
-        }
-
-        long now = System.currentTimeMillis();
-        if (time > now || time <= 0) {
-            return null;
-        }
-
-        // TODO: localize
-        final long diff = now - time;
-        if (diff < MINUTE_MILLIS) {
-            return "just now";
-        } else if (diff < 2 * MINUTE_MILLIS) {
-            return "a minute ago";
-        } else if (diff < 50 * MINUTE_MILLIS) {
-            return diff / MINUTE_MILLIS + " minutes ago";
-        } else if (diff < 90 * MINUTE_MILLIS) {
-            return "an hour ago";
-        } else if (diff < 24 * HOUR_MILLIS) {
-            return diff / HOUR_MILLIS + " hours ago";
-        } else if (diff < 48 * HOUR_MILLIS) {
-            return "yesterday";
-        } else {
-            return diff / DAY_MILLIS + " days ago";
-        }
-    }*/
 
     private String convertTimeFormat(long givenTime) {
         long now = System.currentTimeMillis();
@@ -147,8 +115,6 @@ public class InstagramPhotosAdapter extends ArrayAdapter<InstagramPhoto> {
             // if timestamp given in seconds, convert to millis
             givenTime*= 1000;
         }
-
-//        long givenTimeinMillis = givenTime * 1000;
         return DateUtils.getRelativeTimeSpanString(givenTime, now, DateUtils.SECOND_IN_MILLIS ).toString();
     }
 }
