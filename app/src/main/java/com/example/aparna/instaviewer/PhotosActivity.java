@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ListView;
 
 import com.loopj.android.http.AsyncHttpClient;
@@ -21,12 +20,21 @@ import java.util.ArrayList;
 import cz.msebera.android.httpclient.Header;
 
 
-public class PhotosActivity extends AppCompatActivity {
+public class PhotosActivity extends AppCompatActivity implements CommentsFragment.OnMoreCommentsSelectedListener {
     public  static final String CLIENT_ID="e05c462ebd86446ea48a5af73769b602";
     private ArrayList<InstagramPhoto> photos;
     private InstagramPhotosAdapter aPhotos;
     private SwipeRefreshLayout swipeContainer;
 
+    @Override
+    public void onMoreCommentsSelected(int position) {
+        InstagramPhoto selectedPhoto = photos.get(position);
+        CommentsFragment commentsFragment = CommentsFragment.newInstance();
+        getFragmentManager().beginTransaction().add(android.R.id.content, commentsFragment).commit();
+//        commentsFragment.show(getFragmentManager(), "tag");
+
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +70,19 @@ public class PhotosActivity extends AppCompatActivity {
         //Fetch the popular photos
         fetchPopularPhotos();
     }
-    public void showMoreComments(View view) {
-        CommentsFragment commentsFragment = CommentsFragment.newInstance("Some Title");
-        commentsFragment.show(getFragmentManager(), "tag");
-    }
+//    public void showMoreComments(View view) {
+//        CommentsFragment commentsFragment = CommentsFragment.newInstance();
+////        commentsFragment.show(getFragmentManager(), "tag");
+////        getFragmentManager().beginTransaction().add(android.R.id.content, commentsFragment).commit();
+//
+//        FragmentManager fm = getFragmentManager();
+//
+//        if (fm.findFragmentById(android.R.id.) == null) {
+//            CommentsFragment list = new CommentsFragment();
+//            fm.beginTransaction().add(android.R.id.content, list).commit();
+//        }
+//    }
+
 
     public void fetchPopularPhotos(){
         String url = "https://api.instagram.com/v1/media/popular?client_id=" + CLIENT_ID;
