@@ -1,5 +1,5 @@
 # Android-InstaViewer
-instagram app
+instagram app- time spent: 15hrs
 
 Completed user stories:
 
